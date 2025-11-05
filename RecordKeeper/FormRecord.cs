@@ -17,12 +17,12 @@ using SQLitePCL;
 
 namespace RecordKeeper
 {
-    public partial class Form1 : Form
+    public partial class FormRecord : Form
     {
         string dbPath;
         string connectionString;
         int selectedId = -1;
-        public Form1()
+        public FormRecord()
         {
             InitializeComponent();
             dbPath = Path.Combine(Application.StartupPath, "data.db");
