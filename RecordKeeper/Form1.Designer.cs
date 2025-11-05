@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.txtCodemeli = new System.Windows.Forms.TextBox();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.txtFamily = new System.Windows.Forms.TextBox();
+            this.txtFullName = new System.Windows.Forms.TextBox();
+            this.txtParvandehNo = new System.Windows.Forms.TextBox();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnUpdate = new System.Windows.Forms.Button();
@@ -51,18 +51,18 @@
             resources.ApplyResources(this.txtCodemeli, "txtCodemeli");
             this.txtCodemeli.Name = "txtCodemeli";
             // 
-            // txtName
+            // txtFullName
             // 
-            this.txtName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.txtName, "txtName");
-            this.txtName.Name = "txtName";
-            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            this.txtFullName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.txtFullName, "txtFullName");
+            this.txtFullName.Name = "txtFullName";
+            this.txtFullName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
-            // txtFamily
+            // txtParvandehNo
             // 
-            this.txtFamily.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.txtFamily, "txtFamily");
-            this.txtFamily.Name = "txtFamily";
+            this.txtParvandehNo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.txtParvandehNo, "txtParvandehNo");
+            this.txtParvandehNo.Name = "txtParvandehNo";
             // 
             // txtSearch
             // 
@@ -75,30 +75,39 @@
             resources.ApplyResources(this.btnSave, "btnSave");
             this.btnSave.Name = "btnSave";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnUpdate
             // 
             resources.ApplyResources(this.btnUpdate, "btnUpdate");
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // btnSearch
             // 
             resources.ApplyResources(this.btnSearch, "btnSearch");
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // btnDelete
             // 
             resources.ApplyResources(this.btnDelete, "btnDelete");
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // dataShow
             // 
+            this.dataShow.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dataShow.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataShow.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataShow.GridColor = System.Drawing.SystemColors.ControlLightLight;
             resources.ApplyResources(this.dataShow, "dataShow");
             this.dataShow.Name = "dataShow";
+            this.dataShow.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataShow_CellClick);
+            this.dataShow.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataShow_CellContentClick);
             // 
             // label1
             // 
@@ -134,12 +143,11 @@
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.txtFamily);
-            this.Controls.Add(this.txtName);
+            this.Controls.Add(this.txtParvandehNo);
+            this.Controls.Add(this.txtFullName);
             this.Controls.Add(this.txtCodemeli);
             this.MaximizeBox = false;
             this.Name = "Form1";
-            this.ShowIcon = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).EndInit();
             this.ResumeLayout(false);
@@ -150,8 +158,8 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtCodemeli;
-        private System.Windows.Forms.TextBox txtName;
-        private System.Windows.Forms.TextBox txtFamily;
+        private System.Windows.Forms.TextBox txtFullName;
+        private System.Windows.Forms.TextBox txtParvandehNo;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnUpdate;
