@@ -42,6 +42,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnBackup = new System.Windows.Forms.Button();
+            this.btnRestore = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).BeginInit();
             this.SuspendLayout();
             // 
@@ -129,10 +131,26 @@
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
             // 
-            // Form1
+            // btnBackup
+            // 
+            resources.ApplyResources(this.btnBackup, "btnBackup");
+            this.btnBackup.Name = "btnBackup";
+            this.btnBackup.UseVisualStyleBackColor = true;
+            this.btnBackup.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnRestore
+            // 
+            resources.ApplyResources(this.btnRestore, "btnRestore");
+            this.btnRestore.Name = "btnRestore";
+            this.btnRestore.UseVisualStyleBackColor = true;
+            this.btnRestore.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // FormRecord
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnRestore);
+            this.Controls.Add(this.btnBackup);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -147,8 +165,9 @@
             this.Controls.Add(this.txtFullName);
             this.Controls.Add(this.txtCodemeli);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "FormRecord";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Load += new System.EventHandler(this.FormRecord_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataShow)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -170,6 +189,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnBackup;
+        private System.Windows.Forms.Button btnRestore;
     }
 }
 

@@ -74,9 +74,10 @@ namespace RecordKeeper
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtCodemeli.Text) ||
-               string.IsNullOrWhiteSpace(txtFullName.Text))
+     string.IsNullOrWhiteSpace(txtFullName.Text))
             {
-                MessageBox.Show("لطفا همه فیلدها را پر کنید","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("لطفا همه فیلدها را پر کنید", "Warning",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -89,6 +90,23 @@ namespace RecordKeeper
             using (var conn = new SqliteConnection(connectionString))
             {
                 conn.Open();
+
+                // 🔍 اول بررسی کنیم کد ملی وجود دارد یا نه
+                string checkSql = "SELECT COUNT(*) FROM Person WHERE CodeMelli = @cm";
+                using (var checkCmd = new SqliteCommand(checkSql, conn))
+                {
+                    checkCmd.Parameters.AddWithValue("@cm", txtCodemeli.Text);
+
+                    long count = (long)checkCmd.ExecuteScalar();
+                    if (count > 0)
+                    {
+                        MessageBox.Show("❌ این کد ملی قبلاً ثبت شده است!", "خطا",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
+                // ✅ اگر کد ملی تکراری نبود، ذخیره کن
                 string sql = "INSERT INTO Person (CodeMelli, FullName, ParvandehNo) VALUES (@cm, @fn, @p)";
                 using (var cmd = new SqliteCommand(sql, conn))
                 {
@@ -99,9 +117,12 @@ namespace RecordKeeper
                 }
             }
 
-            MessageBox.Show("✅ اطلاعات با موفقیت ذخیره شد", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("✅ اطلاعات با موفقیت ذخیره شد", "Success",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             ClearFields();
             LoadData();
+
         }
 
         private void dataShow_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -182,7 +203,7 @@ namespace RecordKeeper
         {
             if (txtSearch.Text == "")
             {
-                MessageBox.Show("لطفا برای جست و جو کد ملی ,نام یا نام خوانوادگی مورد نظر خود را وارد کنید!","Warning",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("لطفا برای جست و جو کد ملی ,نام یا نام خوانوادگی مورد نظر خود را وارد کنید!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -215,6 +236,79 @@ namespace RecordKeeper
             txtFullName.Clear();
             txtParvandehNo.Clear();
             selectedId = -1;
+        }
+
+        private void FormRecord_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "SQLite Database (*.db)|*.db";
+                sfd.FileName = "Backup_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".db";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var conn = new SqliteConnection(connectionString))
+                        {
+                            conn.Open();
+
+                            using (var cmd = conn.CreateCommand())
+                            {
+                                // این دستور بکاپ می‌گیرد داخل مسیر انتخاب شده
+                                cmd.CommandText = "VACUUM INTO @path";
+                                cmd.Parameters.AddWithValue("@path", sfd.FileName);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        MessageBox.Show("✅ بکاپ با موفقیت گرفته شد.",
+                            "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("❌ خطا در بکاپ:\n" + ex.Message,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "SQLite Database (*.db)|*.db";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string dbPath = Path.Combine(Application.StartupPath, "database.db");
+
+                        // دیتابیس اصلی را جایگزین می‌کنیم
+                        File.Copy(ofd.FileName, dbPath, true);
+
+                        MessageBox.Show("♻️ ریستور با موفقیت انجام شد. برنامه را مجدد اجرا کنید.",
+                            "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        Application.Restart(); // پیشنهاد
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("❌ خطا در ریستور: " + ex.Message,
+                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }
